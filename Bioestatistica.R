@@ -84,6 +84,7 @@
       ggplot(aes(y=FL,x=sex,colour=sex))+
       geom_boxplot()+
       labs(y="Lobo Frontal", x="Sexo")+
+      stat_summary(fun=mean, geom="point", shape=4, size=4)+
       geom_point()
   )
 
@@ -98,6 +99,7 @@
       ggplot(aes(y=CL,x=sex,colour=sex))+
       geom_boxplot()+
       labs(y="Carapaça",x="Sexo")+
+      stat_summary(fun=mean, geom="point", shape=4, size=4)+
       geom_point()
   )
 
@@ -109,6 +111,7 @@
       ggplot(aes(y=CL,x=sex,colour=sex))+
       geom_boxplot()+
       labs(y="Carapaça", x="Sexo")+
+      stat_summary(fun=mean, geom="point", shape=4, size=4)+
       geom_point()
   )
 
@@ -182,32 +185,56 @@
     #R^2 é 0.9771
     
 ####CrabsExtra####
-#Existe uma curva maior ou menor de densidade do tamanho do 
-#lobo e carapaça em masculino x feminino?
-
-    #lobo
+#Alternativa aos Boxplot
     
-ggplotly(
-crabs%>%
-select( sex,FL)%>%
-ggdensity(x = "FL",
-          add = "mean", rug = TRUE,
-          color = "sex", fill = "sex",
-          palette = c("magenta", "gold"))
-)
-    #carapaca
-
-ggplotly(
-crabs%>%
-  select( sex,CL)%>%
-  ggdensity(x = "CL",
-            add = "mean", rug = TRUE,
-            color = "sex", fill = "sex",
-            palette = c("slateblue1", "forestgreen"))
-)
-
-
-  #
+    #lobo B
+    
+    ggplotly(
+      crabs%>%
+        filter(sp=="B")%>%
+        select(sex,FL)%>%
+        ggdensity(x = "FL",
+                  add = "mean", rug = TRUE,
+                  color = "sex", fill = "sex",
+                  palette = c("magenta", "gold"))
+    )
+    
+    #carapaca B
+    
+    ggplotly(
+      crabs%>%
+        filter(sp=="B")%>%
+        select( sex,CL)%>%
+        ggdensity(x = "CL",
+                  add = "mean", rug = TRUE,
+                  color = "sex", fill = "sex",
+                  palette = c("slateblue1", "forestgreen"))
+    )
+    
+    #lobo O
+    
+    ggplotly(
+      crabs%>%
+        filter(sp=="O")%>%
+        select(sex,FL)%>%
+        ggdensity(x = "FL",
+                  add = "mean", rug = TRUE,
+                  color = "sex", fill = "sex",
+                  palette = c("magenta", "gold"))
+    )
+    
+    #carapaca O
+    
+    ggplotly(
+      crabs%>%
+        filter(sp=="O")%>%
+        select( sex,CL)%>%
+        ggdensity(x = "CL",
+                  add = "mean", rug = TRUE,
+                  color = "sex", fill = "sex",
+                  palette = c("hotpink", "cyan"))
+    )
+    
 ####Iris####
 
   # Conjunto de dados flores
@@ -326,8 +353,25 @@ crabs%>%
         title="Espécie Setosa",
         subtitle= "largura(W) x comprimento(L)",
         x= "Largura(W)",
-        y= "Comprimento (L)")
+        y= "Comprimento (L)")+
+     geom_rug(col="steelblue",alpha=0.1, size=1.5)
   ) 
+  
+  ##OU alternativa esse##
+  
+  ggplotly( 
+    iris%>%
+      filter(Species=="setosa")%>%
+      ggplot(aes(x=Petal.Width,y=Petal.Length)) +
+      geom_point(colour = "black",alpha=0.3) +
+      geom_smooth(method = "lm", col="Red") +
+      labs(
+        title="Espécie Versicolor",
+        subtitle= "largura(W) x comprimento(L)",
+        x= "Largura(W)",
+        y= "Comprimento(L)")+
+      geom_rug(col="black",alpha=0.1, size=1.5)
+  )
   
   #Versicolor#
   
@@ -335,13 +379,14 @@ crabs%>%
     iris%>%
      filter(Species=="versicolor")%>%
       ggplot(aes(x=Petal.Width,y=Petal.Length)) +
-      geom_point(colour = "Black") +
+      geom_point(colour = "blue", alpha=0.4) +
       geom_smooth(method = "lm", col="Red") +
       labs(
-        title="Espécie Versicolor",
-        subtitle= "largura(W) x comprimento(L)",
-        x= "Largura(W)",
-        y= "Comprimento(L)")
+            title="Espécie Versicolor",
+            subtitle= "largura(W) x comprimento(L)",
+            x= "Largura(W)",
+            y= "Comprimento(L)")+
+      geom_rug(col="blue",alpha=0.1, size=1.5)
   )
   
   #Virginica#
@@ -349,16 +394,17 @@ crabs%>%
   ggplotly( 
     iris%>%
       filter(Species=="virginica")%>%
-        ggplot(aes(x=Petal.Width,y=Petal.Length)) +
-        geom_point(colour = "Black") +
-        geom_smooth(method = "lm", col="Red") +
-        labs(
+      ggplot(aes(x=Petal.Width,y=Petal.Length)) +
+      geom_point(colour = "darkmagenta",alpha=0.7) +
+      geom_smooth(method = "lm", col="Red") +
+      labs(
           title="Espécie Virginica",
           subtitle= "largura(W) x comprimento(L)",
           x= "Largura(W)",
-          y= "Comprimento(L)")
+          y= "Comprimento(L)")+
+      geom_rug(col="darkmagenta",alpha=0.1, size=1.5)
   )
-  
+
   #7. Para cada espécie defina a equação da reta, baseados no método dos mínimos quadrados,
   #do gráfico de dispersão do item 6.
   
