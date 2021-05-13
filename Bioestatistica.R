@@ -10,8 +10,9 @@
 
   data(crabs)
   is.data.frame(crabs)
-  crabs
-    
+  crabs=tibble(crabs)
+  print(crabs)
+  
 #2. Calcule, para cada espécie, a média, desvio padrão 
 #   e o coeficiente de variação da variável
 #   tamanho do lobo e tamanho da carapaça.
@@ -19,38 +20,59 @@
 ###Especie B###
   #Lobo#
 
-  BMedLob=
-    mean(crabs$FL[crabs$sp=="B"]) #14.056
-  BDPLob=
-    sd(crabs$FL[crabs$sp=="B"]) #3.01961
-  BCVLob=
-    (BMedLob/BDPLob)*100 #21.48271
-  
+    BMedLob=
+      mean(crabs$FL[crabs$sp=="B"]) 
+    BMedLob #14.056
+    
+    BDPLob=
+      sd(crabs$FL[crabs$sp=="B"]) 
+    BDPLob #3.01961
+    
+    BCVLob=
+      (BMedLob/BDPLob)*100
+    BCVLob #21.48271
+    
   #Carapaca#
+   
     BMedCar=
-      mean(crabs$CL[crabs$sp=="B"]) #30.058
+      mean(crabs$CL[crabs$sp=="B"]) 
+    BMedCar #30.058
+    
     BDPCar=
-      sd(crabs$CL[crabs$sp=="B"]) #6.902703
+      sd(crabs$CL[crabs$sp=="B"]) 
+    BDPCar #6.902703
+    
     BCVCar=
-      (BDPCar/BMedCar)*100 #22.96461
-
+      (BDPCar/BMedCar)*100 
+    BCVCar #22.96461
+    
 ###Especie O###
   #Lobo#
     OMedLob=
-      mean(crabs$FL[crabs$sp=="O"]) #17.11
+      mean(crabs$FL[crabs$sp=="O"])
+    OMedLob #17.11
+    
     ODPLobo=
-      sd(crabs$FL[crabs$sp=="O"]) #3.275575
+      sd(crabs$FL[crabs$sp=="O"])
+    ODPLobo #3.275575
+    
     OCVLobo=
-      (ODPLobo/OMedLob)*100 #19.14422
+      (ODPLobo/OMedLob)*100 
+    OCVLobo #19.14422
 
   #Carapaca#
     OMedCar=
-      mean(crabs$CL[crabs$sp=="O"]) #34.153
+      mean(crabs$CL[crabs$sp=="O"]) 
+    OMedCar #34.153
+    
     ODPCar=
-      sd(crabs$CL[crabs$sp=="O"]) #6.764262
+      sd(crabs$CL[crabs$sp=="O"]) 
+    ODPCar #6.764262
+    
     OCVCar=
-    (ODPCar/OMedCar)*100 #19.80576
-
+    (ODPCar/OMedCar)*100 
+    OCVCar #19.80576
+    
 #3. Compare estes valores. Para cada espécie qual a variável mais heterogênea, o lobo ou a
 #   carapaça? Justifique.
 #   >> Para a especie B, a carapaca e mais heterogenea
@@ -157,32 +179,37 @@
 
 #Especie B#
   
-  Modelo_Linear_B=
-    lm(crabs$CL[crabs$sp=="B"]~crabs$FL[crabs$sp=="B"])
+  ModLinB=
+  lm(crabs$CL[crabs$sp=="B"]~crabs$FL[crabs$sp=="B"])
   #CL=2.275*FL - 1.916 
-
+  CrabsModLinB = function(x){2.275*x-1.916}
+  
 #Especie O#
     
-  Modelo_Linear_O=
-    lm(crabs$CL[crabs$sp=="O"]~crabs$FL[crabs$sp=="O"])
-    #CL= 2.0413*FL - 0.7731
-
+  ModLinO=
+  lm(crabs$CL[crabs$sp=="O"]~crabs$FL[crabs$sp=="O"])
+  #CL= 2.0413*FL - 0.7731
+  CrabsModLinO = function(x){2.0413*x-0.7731}
+  
 #8. Para cada espécie determine o coeficiente de determinação do modelo linear ajustado no
 #   item 6. 
 
-    #Especie B# 
-    (cor(crabs$FL[crabs$sp=="B"],
-         crabs$CL[crabs$sp=="B"]))^2 #0.9902459
+  #Espécie B#
+  
+  SSE_B = sum((predict(ModLinB) - crabs$CL[crabs$sp=="B"])^2)
+  SSR_B = sum((predict(ModLinB) - mean(crabs$CL[crabs$sp=="B"]))^2)
+  SST_B = SSR_B + SSE_B
+  SSR_B / SST_B #0.9902459 >> R^2
+  summary(ModLinB)[[8]] #R^2 é 0.9902459
     
-    summary(Modelo_Linear_B)
-    #R^2 é 0.9902
-    
-    #Especie O#
-    (cor(crabs$FL[crabs$sp=="O"],
-         crabs$CL[crabs$sp=="O"]))^2 #0.9770911
-    
-    summary(Modelo_Linear_O)
-    #R^2 é 0.9771
+  #Especie O#
+  
+  SSE_O = sum((predict(ModLinO) - crabs$CL[crabs$sp=="O"])^2)
+  SSR_O = sum((predict(ModLinO) - mean(crabs$CL[crabs$sp=="O"]))^2)
+  SST_O = SSR_O + SSE_O
+  SSR_O / SST_O #0.9770911 >> R^2
+  summary(ModLinO)[[8]] #R^2 é 0.9770911
+  
     
 ####CrabsExtra####
 #Alternativa aos Boxplot
@@ -211,7 +238,7 @@
                   palette = c("slateblue1", "forestgreen"))
     )
     
-    #lobo O
+    #Lobo sp O
     
     ggplotly(
       crabs%>%
@@ -242,62 +269,98 @@
   #1. Importe o conjunto de dados para o R
   
   data(iris)
-  iris
   is.data.frame(iris)
+  iris=tibble(iris)
+  print(iris)
   
   #2. Calcule, para cada espécie, a média, desvio padrão e o coeficiente de variação da variável
   #   Length e Width da pétalas.
   
   #EspSetosa#
-  #comprimento(L)# Length
-  SetMedComp=
+  #Comprimento(L)# Length
+  
+  SetMedComp= 
     mean(iris$Petal.Length[iris$Species=="setosa"])
-  SetDesPadComp=
+  SetMedComp #1.462
+
+  SetDesPadComp= 
     sd(iris$Petal.Length[iris$Species=="setosa"])
+  SetDesPadComp #0.173664
+  
   SetCoefVarComp=
     (SetDesPadComp/SetMedComp)*100
+  SetCoefVarComp #11.87852
   
-  #largura(W)# Width
-  SetMedLarg= #0.246
+  #Largura(W)# Width
+  
+  SetMedLarg= 
     mean(iris$Petal.Width[iris$Species=="setosa"])
-  SetDesPadLarg= #0.1053856
+  SetMedLarg #0.246
+  
+  SetDesPadLarg= 
     sd(iris$Petal.Width[iris$Species=="setosa"])
-  SetCoefVarLarg= #42.83967
+  SetDesPadLarg #0.1053856
+  
+  SetCoefVarLarg= 
     (SetDesPadLarg/SetMedLarg)*100
+  SerCoefVarlarg #42.83967
   
   #EspVersicolor#
-  #comprimento(L)# Length
-  VerMedComp= #4.26
-    mean(iris$Petal.Length[iris$Species=="versicolor"])
-  VerDesPadComp= #0.469911
-    sd(iris$Petal.Length[iris$Species=="versicolor"])
-  VerCoefVarComp= #11.03077
-    (VerDesPadComp/VerMedComp)*100
+  #Comprimento(L)# Length
   
-  #largura(W)# Width
-  VerMedLarg= #1.326
+  VerMedComp=
+    mean(iris$Petal.Length[iris$Species=="versicolor"])
+  VerMedComp #4.26
+  
+  VerDesPadComp= 
+    sd(iris$Petal.Length[iris$Species=="versicolor"])
+  VerDesPadComp #0.469911
+  
+  VerCoefVarComp=
+    (VerDesPadComp/VerMedComp)*100
+  VerCoefVarComp #11.03077
+  
+  #Largura(W)# Width
+  
+  VerMedLarg= 
     mean(iris$Petal.Width[iris$Species=="versicolor"])
-  VerDesPadLarg= #0.1977527
+  VerMedLarg #1.326
+  
+  VerDesPadLarg=
     sd(iris$Petal.Width[iris$Species=="versicolor"])
-  VerCoefVarLarg= #14.91348
+  VerDesPadLarg #0.1977527
+  
+  VerCoefVarLarg= 
     (VerDesPadLarg/VerMedLarg)*100
+  VerCoefVarLarg #14.91348
   
   #EspVirginica#
   #comprimento(L)# Length
-  VirMedComp= #5.552
-    mean(iris$Petal.Length[iris$Species=="virginica"])
-  VirDesPadComp= #0.5518947
-    sd(iris$Petal.Length[iris$Species=="virginica"])
-  VirCoefVarComp= #9.940466
-    (VirDesPadComp/VirMedComp)*100
   
-  #largura(W)# Width
-  VirMedLarg= #2.026
+  VirMedComp= 
+    mean(iris$Petal.Length[iris$Species=="virginica"])
+  VirMedComp #5.552
+  
+  VirDesPadComp= 
+    sd(iris$Petal.Length[iris$Species=="virginica"])
+  VirDesPadComp #0.5518947
+  
+  VirCoefVarComp= 
+    (VirDesPadComp/VirMedComp)*100
+  VirCoefVarComp #9.940466
+  
+  #Largura(W)# Width
+  VirMedLarg= 
     mean(iris$Petal.Width[iris$Species=="virginica"])
-  VirDesPadLarg= #0.2746501
+  VirMedLarg #2.026
+  
+  VirDesPadLarg= 
     sd(iris$Petal.Width[iris$Species=="virginica"])
-  VirCoefVarLarg= #13.55627
+  VirMedLarg #0.2746501
+  
+  VirCoefVarLarg= 
     (VirDesPadLarg/VirMedLarg)*100
+  VirCoefVarLarg #13.55627
   
   #3. Compare estes valores. Para cada espécie qual a variável mais heterogênea, o comprimento(L) ou
   #   largura(W)? Justifique.
@@ -341,35 +404,18 @@
   #6. Para cada espécie plote um gráfico de dispersão comprimento(L) x largura(W).
   
   #Setosa#
-    
-  ggplotly(
-   iris%>%
-    filter(Species=="setosa")%>%
-      ggplot(aes(x=Petal.Width,y=Petal.Length)) +
-      stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
-      geom_point(colour = "white") +
-      geom_smooth(method = "lm", col="Red") +
-      labs(
-        title="Espécie Setosa",
-        subtitle= "largura(W) x comprimento(L)",
-        x= "Largura(W)",
-        y= "Comprimento (L)")+
-     geom_rug(col="steelblue",alpha=0.1, size=1.5)
-  ) 
-  
-  ##OU alternativa esse##
-  
+
   ggplotly( 
     iris%>%
       filter(Species=="setosa")%>%
-      ggplot(aes(x=Petal.Width,y=Petal.Length)) +
+      ggplot(aes(y=Petal.Width,x=Petal.Length)) +
       geom_point(colour = "black",alpha=0.3) +
       geom_smooth(method = "lm", col="Red") +
       labs(
         title="Espécie Versicolor",
         subtitle= "largura(W) x comprimento(L)",
-        x= "Largura(W)",
-        y= "Comprimento(L)")+
+        y= "Largura(W)",
+        x= "Comprimento(L)")+
       geom_rug(col="black",alpha=0.1, size=1.5)
   )
   
@@ -378,14 +424,14 @@
   ggplotly( 
     iris%>%
      filter(Species=="versicolor")%>%
-      ggplot(aes(x=Petal.Width,y=Petal.Length)) +
+      ggplot(aes(y=Petal.Width,x=Petal.Length)) +
       geom_point(colour = "blue", alpha=0.4) +
       geom_smooth(method = "lm", col="Red") +
       labs(
             title="Espécie Versicolor",
             subtitle= "largura(W) x comprimento(L)",
-            x= "Largura(W)",
-            y= "Comprimento(L)")+
+            y= "Largura(W)",
+            x= "Comprimento(L)")+
       geom_rug(col="blue",alpha=0.1, size=1.5)
   )
   
@@ -394,14 +440,14 @@
   ggplotly( 
     iris%>%
       filter(Species=="virginica")%>%
-      ggplot(aes(x=Petal.Width,y=Petal.Length)) +
+      ggplot(aes(y=Petal.Width,x=Petal.Length)) +
       geom_point(colour = "darkmagenta",alpha=0.7) +
       geom_smooth(method = "lm", col="Red") +
       labs(
           title="Espécie Virginica",
           subtitle= "largura(W) x comprimento(L)",
-          x= "Largura(W)",
-          y= "Comprimento(L)")+
+          y= "Largura(W)",
+          x= "Comprimento(L)")+
       geom_rug(col="darkmagenta",alpha=0.1, size=1.5)
   )
 
@@ -409,36 +455,47 @@
   #do gráfico de dispersão do item 6.
   
   #Setosa#
-  SetModLin=iris$Petal.Width[iris$Species=="setosa"]~
-            iris$Petal.Length[iris$Species=="setosa"]
-  lm(SetModLin)
+  ModLinSet=
+  lm(iris$Petal.Width[iris$Species=="setosa"]~
+     iris$Petal.Length[iris$Species=="setosa"])
   #y= 0.20125x 0.04822
+  IrisModLinSetosa = function(x){0.2012*x-0.04822}
   
   #Versicolor
-  VerModLin=iris$Petal.Width[iris$Species=="versicolor"]~
-            iris$Petal.Length[iris$Species=="versicolor"]
-  lm(VerModLin)
-  #y= 0.33105x  0.08429
+  ModLinVer=
+  lm(iris$Petal.Width[iris$Species=="versicolor"]~
+     iris$Petal.Length[iris$Species=="versicolor"])
+  #y= 0.33105x-0.08429
+  IrisModLinVersicolor = function(x){0.33105*x-0.08429}
   
   #Virginca#
-  VirModLin=iris$Petal.Length[iris$Species=="virginica"]~
-            iris$Petal.Width[iris$Species=="virginica"]
-  lm(VirModLin)
-  #y= 0.6473x + 4.2407
+  ModLinVir=
+  lm(iris$Petal.Width[iris$Species=="virginica"]~
+     iris$Petal.Length [iris$Species=="virginica"])
+  #y= 0.1603x + 1.1360
+  IrisModLinVirginica = function(x){0.1673*x+1.1360}
   
   #8. Para cada espécie determine o coeficiente de determinação do modelo linear ajustado no
   #item 6.
+  
   #Setosa
-  cor(iris$Petal.Width[iris$Species=="setosa"],
-      iris$Petal.Length[iris$Species=="setosa"])
-  0.33163**2 #R2 >> 0.1099785
+  SSE_Set = sum((predict(ModLinSet) - iris$Petal.Width[iris$Species=="setosa"])^2)
+  SSR_Set = sum((predict(ModLinSet) - mean(iris$Petal.Width[iris$Species=="setosa"]))^2)
+  SST_Set = SSR_Set + SSE_Set
+  SSR_Set / SST_Set #0.1099785 >> R^2
+  summary(ModLinSet)[[8]] #0.11 >> R^2
   
   #Versicolor#
-  cor(iris$Petal.Width[iris$Species=="versicolor"],
-      iris$Petal.Length[iris$Species=="versicolor"])
-  0.7866681**2 #R2 >> 0.6188467
+  SSE_Ver = sum((predict(ModLinVer) - iris$Petal.Width[iris$Species=="versicolor"])^2)
+  SSR_Ver = sum((predict(ModLinVer) - mean(iris$Petal.Width[iris$Species=="versicolor"]))^2)
+  SST_Ver = SSR_Ver + SSE_Ver
+  SSR_Ver / SST_Ver #0.6188467 >> R^2
+  summary(ModLinVer)[[8]] #0.6188467 >> R^2
   
   #Virginica
-  cor(iris$Petal.Width[iris$Species=="virginica"],
-      iris$Petal.Length[iris$Species=="virginica"])
-  0.3221082**2 #R2 >> 0.1037537
+  SSE_Vir = sum((predict(ModLinVir) - iris$Petal.Width[iris$Species=="virginica"])^2)
+  SSR_Vir = sum((predict(ModLinVir) - mean(iris$Petal.Width[iris$Species=="virginica"]))^2)
+  SST_Vir = SSR_Vir + SSE_Vir
+  SSR_Vir / SST_Vir #0.1037537 >> R^2
+  summary(ModLinVir)[[8]] #0.1037537 >> R^2
+  
