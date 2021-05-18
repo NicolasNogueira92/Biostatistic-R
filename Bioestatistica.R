@@ -29,7 +29,7 @@
     BDPLob #3.01961
     
     BCVLob=
-      (BMedLob/BDPLob)*100
+      (BDPLob/BMedLob)*100
     BCVLob #21.48271
     
   #Carapaca#
@@ -48,6 +48,7 @@
     
 ###Especie O###
   #Lobo#
+    
     OMedLob=
       mean(crabs$FL[crabs$sp=="O"])
     OMedLob #17.11
@@ -61,6 +62,7 @@
     OCVLobo #19.14422
 
   #Carapaca#
+    
     OMedCar=
       mean(crabs$CL[crabs$sp=="O"]) 
     OMedCar #34.153
@@ -78,8 +80,8 @@
 #   >> Para a especie B, a carapaca e mais heterogenea
 #      Ja para a especie O, o lobo e mais heterogeneo
 #      Basta olhar para o coeficiente de variacao de cada um, que por definição e o quanto uma variável e heterogênea
-#      Na especie B, o lobo tem 21.48271% de variacao, ja a carapaca 22.96461%. Carapaca possui um valor maior. 
-#      Na especie O, o lobo tem 19.14422% de variacao, ja a carapaca 19.80576%. Carapaca possui um valor maior. 
+#      Na especie B, o lobo tem 21.48271% de variacao, ja a carapaca 22.96461%. Carapaca possui um coeficiente de variação maior. 
+#      Na especie O, o lobo tem 19.14422% de variacao, ja a carapaca 19.80576%. Carapaca possui um coeficiente de variação maior. 
 
 #4. Construa, para cada espécie, um gráfico boxplot comparando o tamanho do lobo frontal
 #   entre machos e fêmeas.
@@ -92,21 +94,28 @@
   ggplotly(
     crabs%>%
     filter(sp=="B")%>%
-    ggplot(aes(y=FL,x=sex,colour=sex))+
+    ggplot(aes(y = FL, x = sex, colour = sex))+
     geom_boxplot()+
-    stat_summary(fun=mean, geom="point", shape=4, size=4)+
+    labs(title = "Gráfico 1", 
+         subtitle = "Espécie B",
+         y = "Lobo Frontal", 
+         x = "Sexo")+
+    stat_summary(fun = mean, geom = "point", shape = 4, size = 4)+
     geom_point()
   ) 
-
+  
 #Gráfico 2, Espécie O, Lobo Frontal MxF#
     
   ggplotly(
     crabs%>%
     filter(sp=="O")%>%
-      ggplot(aes(y=FL,x=sex,colour=sex))+
+      ggplot(aes(y = FL, x = sex, colour = sex))+
       geom_boxplot()+
-      labs(y="Lobo Frontal", x="Sexo")+
-      stat_summary(fun=mean, geom="point", shape=4, size=4)+
+      labs(title = "Gráfico 2", 
+           subtitle = "Espécie O", 
+           y = "Lobo Frontal", 
+           x = "Sexo")+
+      stat_summary(fun = mean, geom = "point", shape = 4, size = 4)+
       geom_point()
   )
 
@@ -118,10 +127,13 @@
   ggplotly(
     crabs%>%
     filter(sp=="B")%>%
-      ggplot(aes(y=CL,x=sex,colour=sex))+
+      ggplot(aes(y = CL, x = sex, colour = sex))+
       geom_boxplot()+
-      labs(y="Carapaça",x="Sexo")+
-      stat_summary(fun=mean, geom="point", shape=4, size=4)+
+      labs(title = "Gráfico 3", 
+           subtitle = "Espécie B",
+           y = "Carapaça", 
+           x = "Sexo")+
+      stat_summary(fun = mean, geom = "point", shape = 4, size = 4)+
       geom_point()
   )
 
@@ -130,10 +142,13 @@
   ggplotly(
     crabs%>%
     filter(sp=="O")%>%
-      ggplot(aes(y=CL,x=sex,colour=sex))+
+      ggplot(aes(y = CL, x = sex, colour = sex))+
       geom_boxplot()+
-      labs(y="Carapaça", x="Sexo")+
-      stat_summary(fun=mean, geom="point", shape=4, size=4)+
+      labs(title = "Gráfico 4", 
+           subtitle = "Espécie O",
+           y = "Carapaça", 
+           x = "Sexo")+
+      stat_summary(fun = mean, geom = "point", shape = 4, size = 4)+
       geom_point()
   )
 
@@ -145,16 +160,14 @@
   ggplotly(
     crabs %>%
     filter(sp=="B")%>%
-      ggplot(aes(x=FL,y=CL))+
+      ggplot(aes(x = FL, y = CL))+
       geom_point()+
-      labs(
-        title="Grafico 5",
-        subtitle= "Espécie B Lobo x Carapaca",
-        x= "Lobo",
-        y= "Carapaca"
-        )+
+      labs(title ="Grafico 5",
+           subtitle = "Espécie B Lobo x Carapaca",
+           x = "Lobo",
+           y = "Carapaca")+
       geom_point(colour = "Blue") +
-      geom_smooth(method = "lm", col="Red")
+      geom_smooth(method = "lm", col = "Red")
   )
   
 #Criar o Grafico de dispersão Especie O#
@@ -164,12 +177,10 @@
       filter(sp=="O")%>%
         ggplot(aes(x=FL,y=CL))+
         geom_point()+
-        labs(
-          title="Grafico 5",
-          subtitle= "Espécie O Lobo x Carapaca",
-          x= "Lobo",
-          y= "Carapaca"
-        )+
+        labs(title="Grafico 5",
+             subtitle= "Espécie O Lobo x Carapaca",
+             x= "Lobo",
+             y= "Carapaca")+
         geom_point(colour = "Purple") +
         geom_smooth(method = "lm", col="Brown")
   ) 
@@ -196,12 +207,13 @@
 
   #Espécie B#
   
-  SSE_B = sum((predict(ModLinB) - crabs$CL[crabs$sp=="B"])^2)
+  SSE_B = sum((predict(ModLinB) - crabs$CL[crabs$sp=="B"])^2) #fitted
   SSR_B = sum((predict(ModLinB) - mean(crabs$CL[crabs$sp=="B"]))^2)
   SST_B = SSR_B + SSE_B
   SSR_B / SST_B #0.9902459 >> R^2
   summary(ModLinB)[[8]] #R^2 é 0.9902459
-    
+  cor(crabs$FL[crabs$sp=="B"], crabs$CL[crabs$sp=="B"])**2 # ?
+  
   #Especie O#
   
   SSE_O = sum((predict(ModLinO) - crabs$CL[crabs$sp=="O"])^2)
@@ -209,63 +221,15 @@
   SST_O = SSR_O + SSE_O
   SSR_O / SST_O #0.9770911 >> R^2
   summary(ModLinO)[[8]] #R^2 é 0.9770911
-  
-    
-####CrabsExtra####
-#Alternativa aos Boxplot
-    
-    #lobo B
-    
-    ggplotly(
-      crabs%>%
-        filter(sp=="B")%>%
-        select(sex,FL)%>%
-        ggdensity(x = "FL",
-                  add = "mean", rug = TRUE,
-                  color = "sex", fill = "sex",
-                  palette = c("magenta", "gold"))
-    )
-    
-    #carapaca B
-    
-    ggplotly(
-      crabs%>%
-        filter(sp=="B")%>%
-        select( sex,CL)%>%
-        ggdensity(x = "CL",
-                  add = "mean", rug = TRUE,
-                  color = "sex", fill = "sex",
-                  palette = c("slateblue1", "forestgreen"))
-    )
-    
-    #Lobo sp O
-    
-    ggplotly(
-      crabs%>%
-        filter(sp=="O")%>%
-        select(sex,FL)%>%
-        ggdensity(x = "FL",
-                  add = "mean", rug = TRUE,
-                  color = "sex", fill = "sex",
-                  palette = c("magenta", "gold"))
-    )
-    
-    #carapaca O
-    
-    ggplotly(
-      crabs%>%
-        filter(sp=="O")%>%
-        select( sex,CL)%>%
-        ggdensity(x = "CL",
-                  add = "mean", rug = TRUE,
-                  color = "sex", fill = "sex",
-                  palette = c("hotpink", "cyan"))
-    )
+  cor(crabs$FL[crabs$sp=="O"], crabs$CL[crabs$sp=="O"])**2 # ?
     
 ####Iris####
-
+  
   # Conjunto de dados flores
   
+  #"Tamanho" = "Comprimento (Length)"
+  #"Largura" = "Largura (Width)"
+    
   #1. Importe o conjunto de dados para o R
   
   data(iris)
@@ -303,7 +267,7 @@
   
   SetCoefVarLarg= 
     (SetDesPadLarg/SetMedLarg)*100
-  SerCoefVarlarg #42.83967
+  SetCoefVarLarg #42.83967
   
   #EspVersicolor#
   #Comprimento(L)# Length
@@ -335,7 +299,7 @@
   VerCoefVarLarg #14.91348
   
   #EspVirginica#
-  #comprimento(L)# Length
+  #Comprimento(L)# Length
   
   VirMedComp= 
     mean(iris$Petal.Length[iris$Species=="virginica"])
@@ -356,7 +320,7 @@
   
   VirDesPadLarg= 
     sd(iris$Petal.Width[iris$Species=="virginica"])
-  VirMedLarg #0.2746501
+  VirDesPadLarg #0.2746501
   
   VirCoefVarLarg= 
     (VirDesPadLarg/VirMedLarg)*100
@@ -458,14 +422,14 @@
   ModLinSet=
   lm(iris$Petal.Width[iris$Species=="setosa"]~
      iris$Petal.Length[iris$Species=="setosa"])
-  #y= 0.20125x 0.04822
+  #y= 0.20125x - 0.04822
   IrisModLinSetosa = function(x){0.2012*x-0.04822}
   
   #Versicolor
   ModLinVer=
   lm(iris$Petal.Width[iris$Species=="versicolor"]~
      iris$Petal.Length[iris$Species=="versicolor"])
-  #y= 0.33105x-0.08429
+  #y= 0.33105x - 0.08429
   IrisModLinVersicolor = function(x){0.33105*x-0.08429}
   
   #Virginca#
@@ -483,14 +447,18 @@
   SSR_Set = sum((predict(ModLinSet) - mean(iris$Petal.Width[iris$Species=="setosa"]))^2)
   SST_Set = SSR_Set + SSE_Set
   SSR_Set / SST_Set #0.1099785 >> R^2
-  summary(ModLinSet)[[8]] #0.11 >> R^2
-  
-  #Versicolor#
+  summary(ModLinSet)[[8]] #0.1099785 >> R^2
+  cor(iris$Petal.Length[iris$Species=="setosa"], 
+      iris$Petal.Width[iris$Species=="setosa"])**2
+ 
+   #Versicolor#
   SSE_Ver = sum((predict(ModLinVer) - iris$Petal.Width[iris$Species=="versicolor"])^2)
   SSR_Ver = sum((predict(ModLinVer) - mean(iris$Petal.Width[iris$Species=="versicolor"]))^2)
   SST_Ver = SSR_Ver + SSE_Ver
   SSR_Ver / SST_Ver #0.6188467 >> R^2
   summary(ModLinVer)[[8]] #0.6188467 >> R^2
+  cor(iris$Petal.Length[iris$Species=="versicolor"], 
+      iris$Petal.Width[iris$Species=="versicolor"])**2
   
   #Virginica
   SSE_Vir = sum((predict(ModLinVir) - iris$Petal.Width[iris$Species=="virginica"])^2)
@@ -498,4 +466,11 @@
   SST_Vir = SSR_Vir + SSE_Vir
   SSR_Vir / SST_Vir #0.1037537 >> R^2
   summary(ModLinVir)[[8]] #0.1037537 >> R^2
+  cor(iris$Petal.Length[iris$Species=="virginica"], 
+      iris$Petal.Width[iris$Species=="virginica"])**2
   
+  
+####IrisExtra#### 
+  pairs(iris[1:4], main = "Anderson's Iris Data -- 3 species",
+        pch = 21, bg = c("red", "green3", "blue")[unclass(iris$Species)])
+  unclass(iris$Species)
