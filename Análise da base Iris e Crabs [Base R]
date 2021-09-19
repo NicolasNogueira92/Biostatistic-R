@@ -1,0 +1,385 @@
+####DataCrabs####
+library(MASS)
+data(crabs)
+crabs = data.frame(crabs$sp,crabs$sex,crabs$FL,crabs$CL)
+names(crabs) = c("Espécie","Sexo","Lobo","Carapaça")
+head(crabs)
+####Summary####
+paste("Tamanho da Lobo, Espécie B (mm)"); paste("Minimo:", quantile(crabs$Lobo[crabs$Espécie=="B"])[[1]]); paste("1º Quartil:", quantile(crabs$Lobo[crabs$Espécie=="B"])[[2]]); paste("Mediana:", quantile(crabs$Lobo[crabs$Espécie=="B"])[[3]]); paste("3º Quartil:", quantile(crabs$Lobo[crabs$Espécie=="B"])[[4]]); paste("Máximo:", quantile(crabs$Lobo[crabs$Espécie=="B"])[[5]]); paste("Média:", round(mean(crabs$Lobo[crabs$Espécie=="B"]), 3)); paste("Desvio Padrão:", round(sd(crabs$Lobo[crabs$Espécie=="B"]), 3)); paste("Coeficiente de Variação:", round(sd(crabs$Lobo[crabs$Espécie=="B"])/mean(crabs$Lobo[crabs$Espécie=="B"])*100, 3),"%")
+
+paste("Tamanho da Carapaça, Espécie B (mm)"); paste("Minimo:", quantile(crabs$Carapaça[crabs$Espécie=="B"])[[1]]); paste("1º Quartil:", quantile(crabs$Carapaça[crabs$Espécie=="B"])[[2]]); paste("Mediana:", quantile(crabs$Carapaça[crabs$Espécie=="B"])[[3]]); paste("3º Quartil:", quantile(crabs$Carapaça[crabs$Espécie=="B"])[[4]]); paste("Máximo:", quantile(crabs$Carapaça[crabs$Espécie=="B"])[[5]]); paste("Média:", round(mean(crabs$Carapaça[crabs$Espécie=="B"]), 3)); paste("Desvio Padrão:", round(sd(crabs$Carapaça[crabs$Espécie=="B"]), 3)); paste("Coeficiente de Variação:", round(sd(crabs$Carapaça[crabs$Espécie=="B"])/mean(crabs$Carapaça[crabs$Espécie=="B"])*100, 3),"%")
+
+paste("Tamanho da Lobo, Espécie O (mm)"); paste("Minimo:", quantile(crabs$Lobo[crabs$Espécie=="O"])[[1]]); paste("1º Quartil:", quantile(crabs$Lobo[crabs$Espécie=="O"])[[2]]); paste("Mediana:", quantile(crabs$Lobo[crabs$Espécie=="O"])[[3]]); paste("3º Quartil:", quantile(crabs$Lobo[crabs$Espécie=="O"])[[4]]); paste("Máximo:", quantile(crabs$Lobo[crabs$Espécie=="O"])[[5]]); paste("Média:", round(mean(crabs$Lobo[crabs$Espécie=="O"]), 3)); paste("Desvio Padrão:", round(sd(crabs$Lobo[crabs$Espécie=="O"]), 3)); paste("Coeficiente de Variação:", round(sd(crabs$Lobo[crabs$Espécie=="O"])/mean(crabs$Lobo[crabs$Espécie=="O"])*100, 3),"%")
+
+paste("Tamanho da Carapaça, Espécie O (mm)"); paste("Minimo:", quantile(crabs$Carapaça[crabs$Espécie=="O"])[[1]]); paste("1º Quartil:", quantile(crabs$Carapaça[crabs$Espécie=="O"])[[2]]); paste("Mediana:", quantile(crabs$Carapaça[crabs$Espécie=="O"])[[3]]); paste("3º Quartil:", quantile(crabs$Carapaça[crabs$Espécie=="O"])[[4]]); paste("Máximo:", quantile(crabs$Carapaça[crabs$Espécie=="O"])[[5]]); paste("Média:", round(mean(crabs$Carapaça[crabs$Espécie=="O"]), 3)); paste("Desvio Padrão:", round(sd(crabs$Carapaça[crabs$Espécie=="O"]), 3)); paste("Coeficiente de Variação:", round(sd(crabs$Carapaça[crabs$Espécie=="O"])/mean(crabs$Carapaça[crabs$Espécie=="O"])*100, 3),"%")
+####Boxplot####
+
+#Espécie B Lobo M x F
+boxplot(crabs$Lobo[crabs$Espécie=="B"]~crabs$Sexo[crabs$Espécie=="B"],
+        main = c("Lobo Espécie B","Macho vs Fêmea"),
+        xlab = "",
+        ylab = "Tamanho do Lobo(mm)",
+        col = c(rgb(1,0,0,0.5),rgb(0,0,1,0.5)),
+        names = c("Fêmea","Macho"),
+        las = 1, 
+        ylim = c(0,25)
+        )
+points(x = 1:2,
+       y = c(mean(crabs$Lobo[crabs$Espécie == "B" & crabs$Sexo == "F"]), 
+             mean(crabs$Lobo[crabs$Espécie == "B" & crabs$Sexo == "M"])),
+       pch = 18, 
+       cex = 1.5, 
+       col = "black"
+       )
+legend("bottomright", 
+       pch = 18, 
+       col = "black",
+       paste("Média")
+       )
+
+#Espécie B Carapaça M x F
+boxplot(crabs$Carapaça[crabs$Espécie == "B"]~crabs$Sexo[crabs$Espécie == "B"],
+        main = c("Carapaça Espécie B"),
+        xlab = "",
+        ylab = "Comprimento da Carapaça (mm)",
+        col = c(rgb(1,0,0,0.5),rgb(0,0,1,0.5)),
+        names = c("Fêmea","Macho"),
+        las = 1, 
+        ylim = c(0,50)
+        )
+points(x = 1:2,
+       y = c(mean(crabs$Carapaça[crabs$Espécie == "B" & crabs$Sexo == "F"]), 
+             mean(crabs$Carapaça[crabs$Espécie == "B" & crabs$Sexo == "M"])),
+       pch = 18, 
+       cex = 1.5, 
+       col = "black"
+       )
+legend("bottomright", 
+       pch = 18, 
+       col = "black", 
+       paste("Média")
+       )
+
+#Espécie O Lobo M x F
+boxplot(crabs$Lobo[crabs$Espécie=="O"]~crabs$Sexo[crabs$Espécie=="O"],
+        main = c("Lobo Espécie B"),
+        ylab = "Tamanho do Lobo(mm)",
+        col = c(rgb(0,0,1,0.5),rgb(1,0,0,0.5)),
+        names = c("Macho", "Fêmea"),
+        las = 1, 
+        ylim = c(0,25)
+        )
+points(x = 1:2,
+       y = c(mean(crabs$Lobo[crabs$Espécie == "B" & crabs$Sexo == "F"]), 
+            mean(crabs$Lobo[crabs$Espécie == "B" & crabs$Sexo == "M"])),
+       pch = 18, 
+       cex = 1.5, 
+       col = "black"
+       )
+legend("bottomright", 
+       pch = 18, 
+       col = "black", 
+       paste("Média")
+       )
+
+#Espécie O Carapaça M x F
+boxplot(crabs$Carapaça[crabs$Espécie=="B"]~crabs$Sexo[crabs$Espécie=="O"],
+        main = c("Carapaça Espécie B"),
+        xlab = "",
+        ylab = "Comprimento da Carapaça (mm)",
+        col = c(rgb(1,0,0,0.5),rgb(0,0,1,0.5)),
+        names = c("Fêmea", "Macho"),
+        las = 1, 
+        ylim = c(0,50)
+)
+points(x = 1:2,
+       y = c(mean(crabs$Carapaça[crabs$Espécie == "B" & crabs$Sexo == "F"]), 
+             mean(crabs$Carapaça[crabs$Espécie == "B" & crabs$Sexo == "M"])),
+       pch = 18, 
+       cex = 1.5,
+       col = "black"
+)
+legend("bottomright", 
+       pch = 18,
+       col = "black", 
+       paste("Média")
+)
+
+####Histograma####
+
+#Lobo, Espécie B
+par(mfrow = c(2,1), mar = c(0,5,5,1))
+hist(crabs$Lobo[crabs$Espécie == "B" & crabs$Sexo == "F"], 
+     main = "Lobo Espécie B",
+     xlab = "",
+     ylab = "Frequência",
+     xlim = c(5,25), 
+     ylim = c(0,15), 
+     breaks = 15,
+     col = rgb(1,0,0,0.5),
+     xaxt = "n",
+)
+legend("topright", 
+       pch = c(15,15), 
+       col = c(rgb(1,0,0,0.5), rgb(0,0,1,0.5)), 
+       legend = c("Fêmea","Macho")
+)
+par(mar = c(5,5,0,1))
+hist(crabs$Lobo[crabs$Espécie == "B" & crabs$Sexo == "M"], 
+     main = "",
+     xlab = "Tamanho do Lobo (mm)",
+     ylab = "Frequência",
+     xlim = c(5,25), 
+     ylim = c(15,0), 
+     breaks = 15,
+     col = rgb(0,0,1,0.5)
+)
+
+#Carapaça, Espécie B
+par(mfrow = c(2,1), mar = c(0,5,5,1))
+hist(crabs$Carapaça[crabs$Espécie == "B" & crabs$Sexo == "F"], 
+     main = "Carapaça Espécie B",
+     xlab = "",
+     ylab = "Frequência",
+     xlim = c(10,55), 
+     ylim = c(0,10), 
+     breaks = 15,
+     col = rgb(1,0,0,0.5),
+     xaxt = "n",
+)
+legend("topright", 
+       pch = c(15,15), 
+       col = c(rgb(1,0,0,0.5), rgb(0,0,1,0.5)), 
+       legend = c("Fêmea","Macho")
+)
+par(mar = c(5,5,0,1))
+hist(crabs$Carapaça[crabs$Espécie == "B" & crabs$Sexo == "M"], 
+     main = "",
+     xlab = "Tamanho da Carapaça (mm)",
+     ylab = "Frequência",
+     xlim = c(10,55) , 
+     ylim = c(10,0), 
+     breaks = 15,
+     col = rgb(0,0,1,0.5)
+)
+
+#Lobo, Espécie O
+par(mfrow = c(2,1), mar = c(0,5,5,1))
+hist(crabs$Lobo[crabs$Espécie == "O" & crabs$Sexo == "F"], 
+     main = "Lobo Espécie O",
+     xlab = "",
+     ylab = "Frequência",
+     xlim = c(5,25), 
+     ylim = c(0,15), 
+     breaks = 15,
+     col = rgb(1,0,0,0.5),
+     xaxt = "n",
+)
+legend("topright", 
+       pch = c(15,15), 
+       col = c(rgb(1,0,0,0.5), rgb(0,0,1,0.5)), 
+       legend = c("Fêmea","Macho")
+)
+par(mar = c(5,5,0,1))
+hist(crabs$Lobo[crabs$Espécie == "O" & crabs$Sexo == "M"], 
+     main = "",
+     xlab = "Tamanho do Lobo (mm)",
+     ylab = "Frequência",
+     xlim = c(5,25), 
+     ylim = c(15,0), 
+     breaks = 15,
+     col = rgb(0,0,1,0.5)
+)
+
+#Carapaça, Espécie O
+par(mfrow = c(2,1), mar = c(0,5,5,1))
+hist(crabs$Carapaça[crabs$Espécie == "O" & crabs$Sexo == "F"], 
+     main = "Carapaça Espécie O",
+     xlab = "",
+     ylab = "Frequência",
+     xlim = c(10,55), 
+     ylim = c(0,10), 
+     breaks = 15,
+     col = rgb(1,0,0,0.5),
+     xaxt = "n",
+)
+legend("topright", 
+       pch = c(15,15), 
+       col = c(rgb(1,0,0,0.5), rgb(0,0,1,0.5)), 
+       legend = c("Fêmea","Macho")
+)
+par(mar = c(5,5,0,1))
+hist(crabs$Carapaça[crabs$Espécie == "O" & crabs$Sexo == "M"], 
+     main = "",
+     xlab = "Tamanho da Carapaça (mm)",
+     ylab = "Frequência",
+     xlim = c(10,55) , 
+     ylim = c(10,0), 
+     breaks = 15,
+     col = rgb(0,0,1,0.5)
+)
+
+par(mfrow = c(1,1), mar = c(5,5,5,5))
+####Plot####
+#Espécie B Carapaça x Lobo#
+plot(
+    crabs$Carapaça[crabs$Espécie == "B"], 
+    crabs$Lobo[crabs$Espécie == "B"], 
+    main = c("Dispersão Espécie B", "Carapaça x Lobo"),
+    xlab = "Carapaça",
+    ylab = "Lobo",
+    las = 1,
+    pch = 16,
+    col = rgb(0,0,1,0.5),
+    panel.first = c(abline(lm(crabs$Lobo[crabs$Espécie=="B"]~
+                              crabs$Carapaça[crabs$Espécie=="B"]), 
+                            col = rgb(0,0,1,1)),
+                    grid(),
+                    legend("bottomright",
+                            lty = 1, 
+                            lwd = 1,
+                            col = rgb(0,0,1,1),
+                            paste("F(x) = 0.435 * x + 0.971"))
+                     )
+     )
+summary(lm(crabs$Lobo[crabs$Espécie=="B"] ~ crabs$Carapaça[crabs$Espécie=="B"]))
+
+#Espécie O Carapaça x Lobo
+plot(crabs$Carapaça[crabs$Espécie=="O"],crabs$Lobo[crabs$Espécie=="O"], 
+     main = c("Dispersão Espécie O", "Carapaça x Lobo"),
+     xlab = "Carapaça",
+     ylab = "Lobo",
+     las = 1,
+     pch = 16,
+     col = rgb(1, 0.5, 0, 0.5),
+     panel.first = c(abline(lm(crabs$Lobo[crabs$Espécie=="O"]~
+                               crabs$Carapaça[crabs$Espécie=="O"]
+                               ), 
+                            col = rgb(1,0.5,0,1)
+                            ),
+                     grid(),
+                     legend("bottomright", 
+                            lty = 1, 
+                            lwd = 1, 
+                            col = rgb(1,0.5,0,1), 
+                            paste("F(x) = 0.478 * x + 0.762"))
+                     )
+     )
+summary(lm(crabs$Lobo[crabs$Espécie=="O"] ~ crabs$Carapaça[crabs$Espécie=="O"]))
+
+
+####DataIris####
+data(iris)
+iris = data.frame(iris$Species,iris$Petal.Length,iris$Petal.Width)
+names(iris) = c("Espécie","Tamanho.Pétala","Largura.Pétala")
+head(iris)
+####Summary####
+paste("Tamanho da Pétala, Espécie Setosa (cm)"); paste("Minimo:", quantile(iris$Tamanho.Pétala[iris$Espécie=="setosa"])[[1]]); paste("1º Quartil:", quantile(iris$Tamanho.Pétala[iris$Espécie=="setosa"])[[2]]); paste("Mediana:", quantile(iris$Tamanho.Pétala[iris$Espécie=="setosa"])[[3]]); paste("3º Quartil:", quantile(iris$Tamanho.Pétala[iris$Espécie=="setosa"])[[4]]); paste("Máximo:", quantile(iris$Tamanho.Pétala[iris$Espécie=="setosa"])[[5]]); paste("Média:", round(mean(iris$Tamanho.Pétala[iris$Espécie=="setosa"]), 3)); paste("Desvio Padrão:", round(sd(iris$Tamanho.Pétala[iris$Espécie=="setosa"]), 3)); paste("Coeficiente de Variação:", round(sd(iris$Tamanho.Pétala[iris$Espécie=="setosa"])/mean(iris$Tamanho.Pétala[iris$Espécie=="setosa"])*100, 3),"%")
+
+paste("Largura da Pétala, Espécie Setosa (cm)"); paste("Minimo:", quantile(iris$Largura.Pétala[iris$Espécie=="setosa"])[[1]]); paste("1º Quartil:", quantile(iris$Largura.Pétala[iris$Espécie=="setosa"])[[2]]); paste("Mediana:", quantile(iris$Largura.Pétala[iris$Espécie=="setosa"])[[3]]); paste("3º Quartil:", quantile(iris$Largura.Pétala[iris$Espécie=="setosa"])[[4]]); paste("Máximo:", quantile(iris$Largura.Pétala[iris$Espécie=="setosa"])[[5]]); paste("Média:", round(mean(iris$Largura.Pétala[iris$Espécie=="setosa"]), 3)); paste("Desvio Padrão:", round(sd(iris$Largura.Pétala[iris$Espécie=="setosa"]), 3)); paste("Coeficiente de Variação:", round(sd(iris$Largura.Pétala[iris$Espécie=="setosa"])/mean(iris$Largura.Pétala[iris$Espécie=="setosa"])*100, 3),"%")
+
+paste("Tamanho da Pétala, Espécie Versicolor (cm)"); paste("Minimo:", quantile(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])[[1]]); paste("1º Quartil:", quantile(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])[[2]]); paste("Mediana:", quantile(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])[[3]]); paste("3º Quartil:", quantile(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])[[4]]); paste("Máximo:", quantile(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])[[5]]); paste("Média:", round(mean(iris$Tamanho.Pétala[iris$Espécie=="versicolor"]), 3)); paste("Desvio Padrão:", round(sd(iris$Tamanho.Pétala[iris$Espécie=="versicolor"]), 3)); paste("Coeficiente de Variação:", round(sd(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])/mean(iris$Tamanho.Pétala[iris$Espécie=="versicolor"])*100, 3),"%")
+
+paste("Largura da Pétala, Espécie Versicolor (cm)"); paste("Minimo:", quantile(iris$Largura.Pétala[iris$Espécie=="versicolor"])[[1]]); paste("1º Quartil:", quantile(iris$Largura.Pétala[iris$Espécie=="versicolor"])[[2]]); paste("Mediana:", quantile(iris$Largura.Pétala[iris$Espécie=="versicolor"])[[3]]); paste("3º Quartil:", quantile(iris$Largura.Pétala[iris$Espécie=="versicolor"])[[4]]); paste("Máximo:", quantile(iris$Largura.Pétala[iris$Espécie=="versicolor"])[[5]]); paste("Média:", round(mean(iris$Largura.Pétala[iris$Espécie=="versicolor"]), 3)); paste("Desvio Padrão:", round(sd(iris$Largura.Pétala[iris$Espécie=="versicolor"]), 3)); paste("Coeficiente de Variação:", round(sd(iris$Largura.Pétala[iris$Espécie=="versicolor"])/mean(iris$Largura.Pétala[iris$Espécie=="versicolor"])*100, 3),"%")
+
+paste("Tamanho da Pétala, Espécie Virginica (cm)"); paste("Minimo:", quantile(iris$Tamanho.Pétala[iris$Espécie=="virginica"])[[1]]); paste("1º Quartil:", quantile(iris$Tamanho.Pétala[iris$Espécie=="virginica"])[[2]]); paste("Mediana:", quantile(iris$Tamanho.Pétala[iris$Espécie=="virginica"])[[3]]); paste("3º Quartil:", quantile(iris$Tamanho.Pétala[iris$Espécie=="virginica"])[[4]]); paste("Máximo:", quantile(iris$Tamanho.Pétala[iris$Espécie=="virginica"])[[5]]); paste("Média:", round(mean(iris$Tamanho.Pétala[iris$Espécie=="virginica"]), 3)); paste("Desvio Padrão:", round(sd(iris$Tamanho.Pétala[iris$Espécie=="virginica"]), 3)); paste("Coeficiente de Variação:", round(sd(iris$Tamanho.Pétala[iris$Espécie=="virginica"])/mean(iris$Tamanho.Pétala[iris$Espécie=="virginica"])*100, 3),"%")
+
+paste("Largura da Pétala, Espécie Virginica (cm)"); paste("Minimo:", quantile(iris$Largura.Pétala[iris$Espécie=="virginica"])[[1]]); paste("1º Quartil:", quantile(iris$Largura.Pétala[iris$Espécie=="virginica"])[[2]]); paste("Mediana:", quantile(iris$Largura.Pétala[iris$Espécie=="virginica"])[[3]]); paste("3º Quartil:", quantile(iris$Largura.Pétala[iris$Espécie=="virginica"])[[4]]); paste("Máximo:", quantile(iris$Largura.Pétala[iris$Espécie=="virginica"])[[5]]); paste("Média:", round(mean(iris$Largura.Pétala[iris$Espécie=="virginica"]), 3)); paste("Desvio Padrão:", round(sd(iris$Largura.Pétala[iris$Espécie=="virginica"]), 3)); paste("Coeficiente de Variação:", round(sd(iris$Largura.Pétala[iris$Espécie=="virginica"])/mean(iris$Largura.Pétala[iris$Espécie=="virginica"])*100, 3),"%")
+
+####Boxplot####
+
+boxplot(iris$Tamanho.Pétala~iris$Espécie,
+        main = "Tamnho da Pétala (cm)",
+        xlab = "",
+        ylab = "Tamnho da pétala",
+        names = c("Setosa", "Versicolor", "Virginica"),
+        col = c("Yellow2","Purple","Blue")
+        )
+
+boxplot(iris$Largura.Pétala~iris$Espécie,
+        main = "Largura da Pétala (cm)",
+        xlab = "",
+        ylab = "Largura da pétala",
+        names = c("Setosa", "Versicolor", "Virginica"),
+        col = c("Yellow","Purple","Blue")
+        )
+
+####Plot####
+
+plot(
+        x = iris$Tamanho.Pétala[iris$Espécie=="setosa"],
+        y = iris$Largura.Pétala[iris$Espécie=="setosa"],
+        main = "Espécie Setosa, Tamanho x Largura",
+        xlab = "Tamnho (cm)",
+        ylab = "Larguram (cm)",
+        pch = 18,
+        col = rgb(0.8,0.8,0,0.4),
+        panel.first = c(grid(),
+                        abline(lm(iris$Largura.Pétala[iris$Espécie=="setosa"]~
+                                  iris$Tamanho.Pétala[iris$Espécie=="setosa"]
+                                  ),
+                                  col = rgb(0.8,0.8,0,1),
+                                  lwd = 2
+                               ),
+                        legend("topleft",
+                               lty = 1,
+                               lwd = 2,
+                               col = rgb(0.8,0.8,0,1),
+                               legend = "f(x) = 0.201 * x - 0.048"
+                               )
+                        )
+     )
+summary(lm(iris$Largura.Pétala[iris$Espécie=="setosa"]~
+           iris$Tamanho.Pétala[iris$Espécie=="setosa"]))
+
+plot(
+        x = iris$Tamanho.Pétala[iris$Espécie=="versicolor"],
+        y = iris$Largura.Pétala[iris$Espécie=="versicolor"],
+        main = "Espécie Versicolor, Tamanho x Largura",
+        xlab = "Tamnho (cm)",
+        ylab = "Larguram (cm)",
+        pch = 18,
+        col = rgb(0.5,0,0.5,0.5),
+        panel.first = c(grid(),
+                        abline(lm(iris$Largura.Pétala[iris$Espécie=="versicolor"]~
+                                  iris$Tamanho.Pétala[iris$Espécie=="versicolor"]
+                                  ),
+                               col = rgb(0.5,0,0.5,1),
+                               lwd = 2
+                               ),
+                        legend("topleft",
+                               lty = 1,
+                               lwd = 2, 
+                               col = rgb(0.5,0,0.5,1),
+                               legend = "f(x) = 0.331 * x - 0.084"
+                               )
+                         )
+    )
+summary(lm(iris$Largura.Pétala[iris$Espécie=="versicolor"]~
+           iris$Tamanho.Pétala[iris$Espécie=="versicolor"]))
+
+plot(
+        x = iris$Tamanho.Pétala[iris$Espécie=="virginica"],
+        y = iris$Largura.Pétala[iris$Espécie=="virginica"],
+        main = "Espécie Virginica, Tamanho x Largura",
+        xlab = "Tamnho (cm)",
+        ylab = "Larguram (cm)",
+        pch = 18,
+        col = rgb(0,0,1,0.5),
+        panel.first = c(grid(),
+                        abline(lm(iris$Largura.Pétala[iris$Espécie=="versicolor"]~
+                                  iris$Tamanho.Pétala[iris$Espécie=="versicolor"]
+                                  ),
+                               col = rgb(0,0,1,1),
+                               lwd = 2
+                               ),
+                        legend("topleft",
+                               lty = 1,
+                               lwd = 2, 
+                               col = rgb(0,0,1,1),
+                               legend = "f(x) = 0.331 * x - 0.084"
+                               )
+                        )
+    )
+summary(lm(iris$Largura.Pétala[iris$Espécie=="virginica"]~
+           iris$Tamanho.Pétala[iris$Espécie=="virginica"]))
