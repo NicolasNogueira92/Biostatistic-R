@@ -1,0 +1,118 @@
+plantas <-
+data.frame(Comp = c(10.5,1.5,3.5,8,12,4,1.8,6,1.5,7.5,
+                    9.5,12,18.5,13.5,6.5,14.5,8.2,7,9,5.5,
+                    15.5,15,11,14,10.5,13,11,17,17.5,13,
+                    17.2,21.2,15.7,17.3,11.5,9.9,14.3,10.2,21.6,9.2),
+           Larg = c(4,0.8,2,2.8,4,2,0.8,2.8,0.8,2.5,
+                    2,3.2,4,4,1.5,4,2.5,1.5,3.3,0.8,
+                    8.5,8,6,8,6,7,6,10,10,6.5,
+                    9.7,12.2,8.5,9.5,8.1,4.3,7.1,5.5,11.7,4.8),
+           Plan = c(rep("Esp1", 10),
+                    rep("Esp2", 10),
+                    rep("Esp3", 10),
+                    rep("Esp4", 10)))
+
+
+# Calculando M?dia, desvio e coeficiente de varia??o
+
+# Vamos criar uma fun??o para calcular o coeficiente de varia??o, para facilitar
+# nossa vida.
+cv = function(x){
+  (sd(x)/mean(x))*100
+}
+
+
+# Calculando de fato os n?meoros
+media = aggregate(cbind(Comp = plantas$Comp, Larg = plantas$Larg), 
+                  list(Planta = plantas$Plan), 
+                  mean)
+
+desvio = aggregate(cbind(Comp = plantas$Comp, Larg = plantas$Larg), 
+                   list(Planta = plantas$Plan), 
+                   sd)
+
+coefvar = aggregate(cbind(Comp = plantas$Comp, Larg = plantas$Larg), 
+                    list(Planta = plantas$Plan), 
+                    cv)
+
+
+# Qual a vari?vel mais heterog?nea em cada plantasta? Basta olhar o Coeficiente de
+# varia??o. O que for maior, ? a vari?vel mais heterog?nea em cada grupo.
+
+
+# Boxplot do comprimento
+
+boxplot(plantas$Comp~plantas$Plan, 
+        col = c("red","green","blue","yellow"), 
+        main = "Boxplot Comprimento \n das plantastas", 
+        xlab = "Plantas", 
+        ylab = "Comprimento(cm)")
+
+boxplot(plantas$Larg~plantas$Plan, 
+        col = c("red","green","blue","yellow"), 
+        main = "Boxplot Largura \n das plantastas", 
+        xlab = "Plantas", 
+        ylab = "Largura(cm)")
+
+
+# Gr?fico de dispers?o
+
+plot(plantas$Comp[plantas$Plan=="Esp1"], plantas$Larg[plantas$Plan=="Esp1"], 
+     pch = 15, 
+     col = "green", 
+     main = "Comprimento x Largura\nPlanta Esp1", 
+     xlab = "Comprimento(cm)", 
+     ylab = "Largura(cm)",
+     panel.first = c(abline(lm(plantas$Larg[plantas$Plan=="Esp1"]~plantas$Comp[plantas$Plan=="Esp1"]), 
+                            lwd = 3, 
+                            lty = 3), 
+                     legend("bottomright",  
+                            y.intersp = 3,
+                            lty = 3, 
+                            lwd = 3, 
+                            legend = "y =  0.5063 + 0.3097*x\nR-squared = 0.9395")))
+
+plot(plantas$Comp[plantas$Plan=="Esp2"], plantas$Larg[plantas$Plan=="Esp2"], 
+     pch = 15, col = "red", 
+     main = "Comprimento x Largura\nPlanta Esp2",
+     xlab = "Comprimento(cm)", 
+     ylab = "Largura(cm)",
+     panel.first = c(abline(lm(plantas$Larg[plantas$Plan=="Esp2"]~plantas$Comp[plantas$Plan=="Esp2"]), 
+                            lwd = 3, 
+                            lty = 3), 
+                     legend("bottomright",  
+                            y.intersp = 3,
+                            lty = 3, 
+                            lwd = 3, 
+                            legend = "y = 0.02391 + 0.2549*x\nR-squared = 0.7829")))
+
+plot(plantas$Comp[plantas$Plan=="Esp3"], plantas$Larg[plantas$Plan=="Esp3"], 
+     pch = 15, 
+     col = "blue",
+     main = "Comprimento x Largura\nPlanta Esp3", 
+     xlab = "Comprimento(cm)",
+     ylab = "Largura(cm)",
+     panel.first = c(abline(lm(plantas$Larg[plantas$Plan=="Esp3"]~plantas$Comp[plantas$Plan=="Esp3"]), 
+                            lwd = 3, 
+                            lty = 3), 
+                     legend("bottomright",  
+                            y.intersp = 3,
+                            lty = 3, 
+                            lwd = 3, 
+                            legend = "y =  -0.7909 + 0.6102*x\nR-squared = 0.9544")))
+
+plot(plantas$Comp[plantas$Plan=="Esp4"], plantas$Larg[plantas$Plan=="Esp4"],
+     pch = 15, 
+     col = "yellow", 
+     main = "Comprimento x Largura\nPlanta Esp4", 
+     xlab = "Comprimento(cm)",
+     ylab = "Largura(cm)",
+     panel.first = c(abline(lm(plantas$Larg[plantas$Plan=="Esp4"]~plantas$Comp[plantas$Plan=="Esp4"]), 
+                            lwd = 3,
+                            lty = 3), 
+                     legend("bottomright", 
+                            y.intersp = 3,
+                            lty = 3,
+                            lwd = 3,
+                            legend = "y =  -0.3801 + 0.5753*x\nR-squared = 0.9199")))
+
