@@ -1,0 +1,84 @@
+pacman::p_load(datasets, tidyverse, ggpubr, ggpval, extrafont)
+data(CO2)
+
+CO2 %>% group_by(Treatment, Type) %>%
+describe()
+
+#####
+
+CO2 %>%
+  ggplot(aes(x = Treatment, y = uptake)) +
+    geom_boxplot() +
+    geom_point(alpha = 0.3,
+               aes(size = conc,
+                   colour = Plant)) +
+  facet_wrap(~Type) +
+  theme_void()+
+  labs(title = "Fotoss?ntese <i>Echinochloa crus-galli</i>",
+       x = "",
+       y = "Ganho l?quido de CO2 (?mol/m^2)",
+       name = c("a","B")) +
+  theme(legend.position="none")+
+  scale_x_discrete(labels = c("Controle", "Resfriado")) +
+  theme(
+    plot.title = element_textbox_simple(size = 17),
+    plot.background = element_rect(fill = "White"),
+    plot.margin = margin(1,1,1,1, 'cm'),
+    panel.grid.major = element_line(colour = 'grey70', linetype = 'dotted'),
+    panel.grid.minor = element_line(colour = 'grey90', linetype = 'dotted'),
+    axis.line = element_line(colour = 'grey50'),
+    axis.title = element_text(colour = 'grey40'),
+    axis.title.x = element_text(margin = margin(t = 2, unit = 'mm')),
+    axis.title.y = element_text(angle = 90, margin = margin(r = 2, unit = 'mm')),
+    axis.text = element_text(colour = 'grey70'),
+    axis.text.x = element_text(margin = margin(t = 1, unit = 'mm')),
+    axis.text.y = element_text(margin = margin(r = 1, unit = 'mm')),
+    # axis.ticks = element_line(size = 1.25, colour = 'grey50'),
+    # axis.ticks.length = unit(1.5, 'mm')
+    )
+# -> plot
+add_pval(ggplot_obj = plot, pairs = list(c(1, 2)), test = "var.test")
+
+
+#####
+
+CO2 %>% group_by(Type, Treatment) %>%
+  mutate(Med = mean(uptake),
+         Sd = sd(uptake)) %>%
+
+  ggplot(aes(x = Treatment, y = Med, fill = Type)) +
+    geom_bar(stat = 'identity', position = "dodge") +
+    geom_errorbar(aes(ymin = Med-Sd, ymax = Med+Sd), width = 0.3) +
+    facet_wrap(~Type) +
+    theme_void()+
+  labs(title = "Fotoss?ntese em <i>Echinochloa crus-galli</i>",
+       x = "",
+       y = "Ganho l?quido de CO2 (?mol/m^2)",
+       name = c("a","B")) +
+  theme(legend.position="none")+
+  scale_x_discrete(labels = c("Controle", "Resfriado")) +
+  scale_fill_brewer(palette = 'Paired') +
+
+   theme(
+    plot.title = element_textbox_simple(size = 17),
+    plot.background = element_rect(fill = "white"),
+    plot.margin = margin(1,1,1,1, 'cm'),
+    panel.grid.major = element_line(colour = 'grey70', linetype = 'dotted'),
+    panel.grid.minor = element_line(colour = 'grey90', linetype = 'dotted'),
+    axis.line = element_line(colour = 'grey50'),
+    axis.title = element_text(colour = '#082234'),
+    axis.title.y = element_text(angle = 90, margin = margin(r = 2, unit = 'mm')),
+    axis.text = element_text()) -> plot2
+add_pval(ggplot_obj = plot2, pairs = list(c(1, 2)),
+         test = "t.test", response = 'uptake',
+         alternative = "less")
+
+#####
+
+CO2 %>%
+  ggplot(aes(x = conc, y = uptake)) +
+    geom_point(alpha = 0.5, aes(color = Treatment)) +
+    facet_wrap(~ Type) +
+    stat_smooth(aes(color = Treatment), method = "lm",
+                formula = y ~ log(x), size = 1) +
+    theme_pubclean()
