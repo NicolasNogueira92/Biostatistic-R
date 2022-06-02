@@ -1,0 +1,233 @@
+####Biblioteca####
+
+if(!require(pacman))}install.packages("pacman")
+pacman::p_load(tidyverse, EnvStats, ggplot2, ggthemes, GGally, ggcorrplot, plotly, MASS, moveHMM)
+
+####Iris####
+
+data(iris)
+tibble(iris)
+
+####SummaryIris####
+
+Sum?rio_Tamanho_da_S?pala =
+iris %>%
+  group_by(Species) %>%
+  summarise(
+    M?nimo = quantile(Sepal.Length)[1],
+    "%25" = quantile(Sepal.Length)[2],
+    Mediana = quantile(Sepal.Length)[3],
+    "%75" = quantile(Sepal.Length)[4],
+    M?ximo = quantile(Sepal.Length)[5],
+    M?dia = mean(Sepal.Length),
+    Desvio_Pad?o = sd(Sepal.Length),
+    Coeficiente_de_Varia??o = cv(Sepal.Length)
+    )
+print(Sum?rio_Tamanho_da_S?pala)
+
+Sum?rio_Largura_da_S?pala =
+  iris %>%
+  group_by(Species) %>%
+  summarise(
+    M?nimo = min(Sepal.Width),
+    "%25" = quantile(Sepal.Width)[2],
+    Mediana = median(Sepal.Width),
+    "%75" = quantile(Sepal.Width)[5],
+    M?ximo = max(Sepal.Width),
+    M?dia = mean(Sepal.Width),
+    Desvio_Pad?o = sd(Sepal.Width),
+    Coeficiente_de_Varia??o = cv(Sepal.Width)
+  )
+
+Sum?rio_Tamanho_da_P?tala =
+  iris %>%
+  group_by(Species) %>%
+  summarise(
+    M?nimo = min(Petal.Length),
+    "%25" = quantile(Petal.Length)[2],
+    Mediana = median(Petal.Length),
+    "%75" = quantile(Petal.Length)[5],
+    M?ximo = max(Petal.Length),
+    M?dia = mean(Petal.Length),
+    Desvio_Pad?o = sd(Petal.Length),
+    Coeficiente_de_Varia??o = cv(Petal.Length)
+  )
+
+Sum?rio_Largura_da_P?tala =
+  iris %>%
+  group_by(Species) %>%
+  summarise(
+    M?nimo = min(Petal.Width),
+    "%25" = quantile(Petal.Width)[2],
+    Mediana = median(Petal.Width),
+    "%75" = quantile(Petal.Width)[5],
+    M?ximo = max(Petal.Width),
+    M?dia = mean(Petal.Width),
+    Desvio_Pad?o = sd(Petal.Width),
+    Coeficiente_de_Varia??o = cv(Petal.Width)
+  )
+
+####Boxplot####
+
+iris %>%
+  ggplot(aes(x = Species, y = Sepal.Length, fill = Species)) +
+    geom_boxplot(width = 0.5, outlier.size = 3.5) +
+    geom_dotplot(binaxis = "y", binwidth = 0.06, stackdir = "center") +
+    theme_clean() +
+    scale_fill_canva(palette = "Simple but bold") +
+    labs(title = "Tamanho da S?pala") + xlab("") + ylab("Tamanho (cm)")
+
+iris %>%
+  ggplot(aes(x = Species, y = Sepal.Width, fill = Species)) +
+    geom_boxplot(width = 0.5, outlier.size = 3.5) +
+    geom_dotplot(binaxis = "y", binwidth = 0.06, stackdir = "center") +
+    theme_clean() +
+    scale_fill_canva(palette = "Simple but bold") +
+    labs(title = "Largura da S?pala") + xlab("") + ylab("Largura (cm)")
+
+iris %>%
+  ggplot(aes(x = Species, y = Petal.Length, fill = Species)) +
+    geom_boxplot(width = 0.5, outlier.size = 3.5) +
+    geom_dotplot(binaxis = "y", binwidth = 0.05, stackdir = "center", dotsize = 2) +
+    theme_clean() +
+    scale_fill_canva(palette = "Simple but bold") +
+    labs(title = "Tamanho da P?tala") + xlab("") + ylab("Tamanho (cm)")
+
+iris %>%
+  ggplot(aes(x = Species, y = Petal.Width, fill = Species)) +
+    geom_boxplot(width = 0.5, outlier.size = 3.5) +
+    geom_dotplot(binaxis = "y", binwidth = 0.02, stackdir = "center", dotsize = 1.5) +
+    theme_clean() +
+    scale_fill_canva(palette = "Simple but bold") +
+    labs(title = "Largura da P?tala") + xlab("") + ylab("Largura (cm)")
+
+####Plot####
+
+iris %>%
+  filter(Species == "setosa") %>%
+    ggpairs(aes(alpha = 0.3),
+            columns = 1:4,
+            title = "Correla??es Esp?cie Setosa",
+            lower = list(continuous = "smooth"))
+
+iris %>%
+  filter(Species == "versicolor") %>%
+  ggpairs(aes(alpha = 0.3),
+          columns = 1:4,
+          title = "Correla??es Esp?cie Versicolor",
+          lower = list(continuous = "smooth"))
+
+iris %>%
+  filter(Species == "virginica") %>%
+  ggpairs(aes(alpha = 0.3),
+          columns = 1:4,
+          title = "Correla??es Esp?cie Virginica",
+          lower = list(continuous = "smooth"))
+
+iris |>
+  ggpairs(aes(colour = Species, alpha = 0.3),
+          columns = 1:5,
+          title = "Correla??es Iris",
+          lower = list(continuous = "smooth"))
+
+  ggcorrplot(cor(iris[1:150,1:4]), lab = T,
+           show.legend = F, lab_size = 10,
+           outline.color = "black",
+           title = "Coeficiente de Determina??o Setosa")
+
+ggcorrplot(cor(iris[51:100,1:4])**2, lab = T,
+           show.legend = F, lab_size = 10,
+           outline.color = "black",
+           title = "Coeficiente de Determina??o Versicolor")
+
+ggcorrplot(cor(iris[101:150,1:4])**2, lab = T,
+           show.legend = F, lab_size = 10,
+           outline.color = "black",
+           title = "Coeficiente de Determina??o Virginica")
+
+####DaraCrabs####
+data(crabs)
+tibble(crabs)
+Crabs <- unite(crabs, spsex, c(sp, sex))
+tibble(Crabs)
+####Summary####
+(
+Summary_Crabs_FL <- Crabs %>%
+  group_by(spsex) %>%
+  summarise(
+    M?nimo = min(FL),
+    "%25" = quantile(FL)[2],
+    Mediana = median(FL),
+    "%75" = quantile(FL)[5],
+    M?ximo = max(FL),
+    M?dia = mean(FL),
+    Desvio_Pad?o = sd(FL),
+    Coeficiente_de_Varia??o = cv(FL)
+  )
+)
+
+(
+  Summary_Crabs_RW <- Crabs %>%
+    group_by(spsex) %>%
+    summarise(
+      M?nimo = min(RW),
+      "%25" = quantile(RW)[2],
+      Mediana = median(RW),
+      "%75" = quantile(RW)[5],
+      M?ximo = max(RW),
+      M?dia = mean(RW),
+      Desvio_Pad?o = sd(RW),
+      Coeficiente_de_Varia??o = cv(RW)
+    )
+)
+
+(
+  Summary_Crabs_CL <- Crabs %>%
+    group_by(spsex) %>%
+    summarise(
+      M?nimo = min(CL),
+      "%25" = quantile(CL)[2],
+      Mediana = median(CL),
+      "%75" = quantile(CL)[5],
+      M?ximo = max(CL),
+      M?dia = mean(CL),
+      Desvio_Pad?o = sd(CL),
+      Coeficiente_de_Varia??o = cv(CL)
+    )
+)
+
+(
+  Summary_Crabs_CW <- Crabs %>%
+    group_by(spsex) %>%
+    summarise(
+      M?nimo = min(CW),
+      "%25" = quantile(CW)[2],
+      Mediana = median(CW),
+      "%75" = quantile(CW)[5],
+      M?ximo = max(CW),
+      M?dia = mean(CW),
+      Desvio_Pad?o = sd(CW),
+      Coeficiente_de_Varia??o = cv(CW)
+    )
+)
+
+(
+  Summary_Crabs_BD <- Crabs %>%
+    group_by(spsex) %>%
+    summarise(
+      M?nimo = min(BD),
+      "%25" = quantile(BD)[2],
+      Mediana = median(BD),
+      "%75" = quantile(BD)[5],
+      M?ximo = max(BD),
+      M?dia = mean(BD),
+      Desvio_Pad?o = sd(BD),
+      Coeficiente_de_Varia??o = cv(BD)
+    )
+)
+
+####Boxplot####
+Crabs %>%
+  ggplot(aes(x = spsex, y = FL, fill = spsex)) +
+    geom_violin(width = 0.7) +
+    geom_boxplot(width = 0.4)
